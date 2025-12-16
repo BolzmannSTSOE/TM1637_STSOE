@@ -252,10 +252,10 @@ namespace TM1637 {
             }
             else
                 if (num > 999) 
-                    this.showbit(Math.idiv(num, 1000) % 10, 0); else this.showbit(-1, 0);
-            if (num > 99) this.showbit(Math.idiv(num, 100) % 10, 1); else this.showbit(-1, 1);
-            if (num >  9) this.showbit(Math.idiv(num, 10) % 10, 2); else this.showbit(-1, 2);
-            if (num >= 0) this.showbit(num % 10, 3); else this.showbit(-1, 3);
+                    this.showbit(Math.idiv(num, 1000) % 10, 0); else this.showbit(-1, 0)
+            if (num > 99) this.showbit(Math.idiv(num, 100) % 10, 1); else this.showbit(-1, 1)
+            if (num >  9) this.showbit(Math.idiv(num, 10) % 10, 2); else this.showbit(-1, 2)
+            if (num >= 0) this.showbit(num % 10, 3); else this.showbit(-1, 3)
             /*
             else
                 if (num > 999) 

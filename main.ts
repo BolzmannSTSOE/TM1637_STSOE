@@ -12,6 +12,7 @@ namespace TM1637 {
     let TM1637_CMD1 = 0x40;
     let TM1637_CMD2 = 0xC0;
     let TM1637_CMD3 = 0x80;
+    let TM1637_PAUSE_TIME_US = 10;
     let _SEGMENTS = [0x3F, 0x06, 0x5B, 0x4F, 0x66, 0x6D, 0x7D, 0x07, 0x7F, 0x6F, 0x77, 0x7C, 0x39, 0x5E, 0x79, 0x71];
 
     /**
@@ -25,11 +26,19 @@ namespace TM1637 {
         brightness: number;
         count: number;  // number of LEDs
 
+        constructor(clk: DigitalPin, dio: DigitalPin, intensity: number, count: number) {
+            this.clk = clk;
+            this.dio = dio;
+            this.count = count;
+            this.brightness = intensity;
+        }
+
         /**
          * initial TM1637
          */
         init(): void {
             pins.digitalWritePin(this.clk, 0);
+            control.waitMicros(TM1637_PAUSE_TIME_US);
             pins.digitalWritePin(this.dio, 0);
             this._ON = 8;
             this.buf = pins.createBuffer(this.count);
@@ -42,6 +51,7 @@ namespace TM1637 {
         _start() {
             pins.digitalWritePin(this.dio, 0);
             pins.digitalWritePin(this.clk, 0);
+            control.waitMicros(TM1637_PAUSE_TIME_US);
         }
 
         /**
@@ -50,6 +60,7 @@ namespace TM1637 {
         _stop() {
             pins.digitalWritePin(this.dio, 0);
             pins.digitalWritePin(this.clk, 1);
+            control.waitMicros(TM1637_PAUSE_TIME_US);
             pins.digitalWritePin(this.dio, 1);
         }
 
@@ -78,10 +89,14 @@ namespace TM1637 {
             for (let i = 0; i < 8; i++) {
                 pins.digitalWritePin(this.dio, (b >> i) & 1);
                 pins.digitalWritePin(this.clk, 1);
+                control.waitMicros(TM1637_PAUSE_TIME_US);
                 pins.digitalWritePin(this.clk, 0);
+                control.waitMicros(TM1637_PAUSE_TIME_US);
             }
             pins.digitalWritePin(this.clk, 1);
+            control.waitMicros(TM1637_PAUSE_TIME_US);
             pins.digitalWritePin(this.clk, 0);
+            control.waitMicros(TM1637_PAUSE_TIME_US);
         }
 
         /**
@@ -114,7 +129,75 @@ namespace TM1637 {
             this._stop();
             this._write_dsp_ctrl();
         }
+        
+        /**
+         * Build a segment mask from switches (no hex/binary needed).
+         *
+         *   a
+         * f   b
+         *   g
+         * e   c
+         *   d      
+         */
+        //% blockId="TM1637_segmentsAt"
+        //% block="$this(tm)|segments a %a b %b c %c d %d e %e f %f g %g|at %pos"
+        //% inlineInputMode=inline
+        //% weight=89 blockGap=8 advanced=true
+        //% parts="TM1637" pos.min=0 pos.max=3 pos.dflt=0
+        segmentsAt(a: boolean, b: boolean, c: boolean, d: boolean, e: boolean, f: boolean, g: boolean, pos: number = 1) {
+            let mask = 0
+            if (a) mask |= 1 << 0
+            if (b) mask |= 1 << 1
+            if (c) mask |= 1 << 2
+            if (d) mask |= 1 << 3
+            if (e) mask |= 1 << 4
+            if (f) mask |= 1 << 5
+            if (g) mask |= 1 << 6
+            //if (dp) mask |= 1 << 7
+            this.lightSegmentsAt(mask, pos)
+        }
+        /**
+         * Light indicated segments (bitmask) at given position.
+         *
+         * Segment bits (MSB -> LSB):
+         * bit6=g, bit5=f, bit4=e, bit3=d, bit2=c, bit1=b, bit0=a
+         *
+         *   a
+         * f   b
+         *   g
+         * e   c
+         *   d      
+         *
+         * Example:
+         * - "8" (all segments a..g): 0b01111111
+         * - "4" (b,c,f,g):           0b01100110
+         *
+         * @param segments Segment-bitmask (binary recommended), e.g. 0b01111111
+         * @param pos Digit position (1..count)
+         */
+        //% blockId="TM1637_lightsegmentsat" block="$this(tm)|light segments (bits) %segments|at %pos"
+        //% weight=90 blockGap=8 advanced=true
+        //% parts="TM1637" segments.dflt=0b01111111 pos.min=0 pos.max=3 pos.dflt=0
+        lightSegmentsAt(segments: number = 0b01111111, pos: number = 0) {
+            this.buf[pos % this.count] = segments & 0xFF
+            this._dat(pos, segments & 0xFF)
+        }
 
+        /**
+         * light indicated segments at given position.
+         * @param segments segments to light, eg: 0x7F
+         * @param pos the position of the digit, eg: 0
+         */
+/*        //% blockId="TM1637_lightsegmentsat" block="$this(tm)|light segments %segments |at %pos"
+        //% weight=90 blockGap=8 advanced=true
+        //% parts="TM1637" segments.dflt=0x7F pos.min=1 pos.max=6 pos.dflt=4
+        lightSegmentsAt(segments: number = 0x7F, pos: number = 1) {
+            pos-- //position in TM1637 indexed from 0
+            this.buf[pos % this.count] = segments % 256
+            this._dat(pos, segments % 256)
+        }
+*/
+        
         /**
          * show a number in given position. 
          * @param num number will show, eg: 5
@@ -219,21 +302,18 @@ namespace TM1637 {
     }
 
     /**
-     * create a TM1637 object.
+     * create a Digit Display (TM1637) object.
      * @param clk the CLK pin for TM1637, eg: DigitalPin.P1
      * @param dio the DIO pin for TM1637, eg: DigitalPin.P2
      * @param intensity the brightness of the LED, eg: 7
      * @param count the count of the LED, eg: 4
      */
     //% weight=200 blockGap=8
-    //% blockId="TM1637_create" block="CLK %clk|DIO %dio|intensity %intensity|LED count %count"
-    export function create(clk: DigitalPin, dio: DigitalPin, intensity: number, count: number): TM1637LEDs {
-        let tm = new TM1637LEDs();
-        tm.clk = clk;
-        tm.dio = dio;
-        if ((count < 1) || (count > 5)) count = 4;
-        tm.count = count;
-        tm.brightness = intensity;
+    //% blockId="TM1637_create" block="CLK %clk|DIO %dio|brightness %intensity|digit count %count"
+    //% inlineInputMode=inline count.min=1 count.max=6 count.dflt=4 intensity.min=0 intensity.max=8 intensity.dflt=7
+    //% blockSetVariable=tm
+    export function create(clk: DigitalPin, dio: DigitalPin, intensity: number, count: number = 4): TM1637LEDs {
+        let tm = new TM1637LEDs(clk, dio, intensity, count);
         tm.init();
         return tm;
     }

@@ -131,13 +131,21 @@ namespace TM1637 {
         }
         
         /**
-         * Build a segment mask from switches (no hex/binary needed).
+         * Build a segment mask from switches.
          *
          *   a
          * f   b
          *   g
          * e   c
          *   d      
+         * @param a Segment a (oben)
+         * @param b Segment b (rechts oben)
+         * @param c Segment c (rechts unten)
+         * @param d Segment d (unten)
+         * @param e Segment e (links unten)
+         * @param f Segment f (links oben)
+         * @param g Segment g (Mitte)
+         * @param pos Stelle (0..3)
          */
         //% blockId="TM1637_segmentsAt"
         //% block="$this(tm)|segments a %a b %b c %c d %d e %e f %f g %g|at %pos"
@@ -205,7 +213,7 @@ namespace TM1637 {
          */
         //% blockId="TM1637_showbit" block="%tm|show digit %num |at %bit"
         //% weight=90 blockGap=8
-        //% parts="TM1637"
+        //% parts="TM1637" num.min=-999 num.max=9999 bit.min=0 bit.max=3
         showbit(num: number = 5, bit: number = 0) {
             this.buf[bit % this.count] = _SEGMENTS[num % 16]
             this._dat(bit, _SEGMENTS[num % 16])
@@ -323,14 +331,14 @@ namespace TM1637 {
 
     /**
      * create a Digit Display (TM1637) object.
-     * @param clk the CLK pin for TM1637, eg: DigitalPin.P1
-     * @param dio the DIO pin for TM1637, eg: DigitalPin.P2
+     * @param clk the CLK pin for TM1637, eg: DigitalPin.P0
+     * @param dio the DIO pin for TM1637, eg: DigitalPin.P1
      * @param intensity the brightness of the LED, eg: 7
      * @param count the count of the LED, eg: 4
      */
     //% weight=200 blockGap=8
     //% blockId="TM1637_create" block="CLK %clk|DIO %dio|brightness %intensity|digit count %count"
-    //% inlineInputMode=inline count.min=1 count.max=6 count.dflt=4 intensity.min=0 intensity.max=8 intensity.dflt=7
+    //% inlineInputMode=inline count.min=1 count.max=4 count.dflt=4 intensity.min=0 intensity.max=8 intensity.dflt=7
     //% blockSetVariable=tm
     export function create(clk: DigitalPin, dio: DigitalPin, intensity: number, count: number = 4): TM1637LEDs {
         let tm = new TM1637LEDs(clk, dio, intensity, count);

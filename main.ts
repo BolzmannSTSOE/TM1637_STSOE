@@ -215,10 +215,10 @@ namespace TM1637 {
           * show a number. 
           * @param num is a number, eg: 0
           */
-        //% blockId="TM1637_shownum" block="%tm|show number %num"
+        //% blockId="TM1637_shownumwithleadingzeros" block="%tm|show number %num with leading Zeros"
         //% weight=91 blockGap=8
-        //% parts="TM1637"
-        showNumber(num: number) {
+        //% parts="TM1637" num.min=-999 num.max=9999 num.dflt=0
+        showNumberWithLeadingZeros(num: number) {
             if (num < 0) {
                 this._dat(0, 0x40) // '-'
                 num = -num
@@ -228,6 +228,26 @@ namespace TM1637 {
             this.showbit(num % 10, 3)
             this.showbit(Math.idiv(num, 10) % 10, 2)
             this.showbit(Math.idiv(num, 100) % 10, 1)
+        }
+
+        /**
+          * show a number. 
+          * @param num is a number, eg: 0
+          */
+        //% blockId="TM1637_shownum" block="%tm|show number %num"
+        //% weight=92 blockGap=8
+        //% parts="TM1637" num.min=-999 num.max=9999 num.dflt=0
+        showNumber(num: number) {
+            if (num < 0) {
+                this._dat(0, 0x40) // '-'
+                num = -num
+            }
+            else
+                if (num > 999) 
+                    this.showbit(Math.idiv(num, 1000) % 10, 0)
+            if (num > 99) this.showbit(Math.idiv(num, 100) % 10, 1)
+            if (num >  9) this.showbit(Math.idiv(num, 10) % 10, 2)
+            if (num >= 0) this.showbit(num % 10, 3)
         }
 
         /**

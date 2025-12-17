@@ -140,11 +140,21 @@ namespace TM1637 {
         /**
          * Build a segment mask from switches.
          *
-         *   a
-         * f   b
-         *   g
-         * e   c
-         *   d      
+		 * Segment-Belegung:
+		 *
+		 *   a
+		 * f   b
+		 *   g
+		 * e   c
+		 *   d
+		 *
+		 * a = oben
+		 * b = rechts oben
+		 * c = rechts unten
+		 * d = unten
+		 * e = links unten
+		 * f = links oben
+		 * g = Mitte
          * @param a Segment a (top)
          * @param b Segment b (right top)
          * @param c Segment c (right bottom)
@@ -175,7 +185,7 @@ namespace TM1637 {
         //% g.loc.en="Segment g (middle)"
         //% pos.loc.de="Stelle im Display des TM1637, z.B. 0 (ganz links)"
         //% pos.loc.en="Digit at display of TM1637, e.g. 0 (most left)"
-        //% inlineInputMode=inline
+        //% inlineInputMode=external
         //% weight=89 blockGap=8 advanced=true
         //% parts="TM1637" pos.min=0 pos.max=3 pos.dflt=0
         segmentsAt(a: boolean, b: boolean, c: boolean, d: boolean, e: boolean, f: boolean, g: boolean, pos: number = 0) {
@@ -242,7 +252,7 @@ namespace TM1637 {
         //% bit.loc.de="Stelle im Display des TM1637, z.B. 0 (ganz links)"
         //% bit.loc.en="Digit position, e.g. 0 (most left)"
         //% weight=90 blockGap=8
-        //% parts="TM1637" num.min=-999 num.max=9999 bit.min=0 bit.max=3
+        //% parts="TM1637" num.min=0 num.max=15 num.dflt=5 bit.min=0 bit.max=3
         showbit(num: number = 5, bit: number = 0) {
             this.buf[bit % this.count] = _SEGMENTS[num % 16]
             this._dat(bit, _SEGMENTS[num % 16])

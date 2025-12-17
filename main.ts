@@ -101,9 +101,9 @@ namespace TM1637 {
 
         /**
          * set TM1637 intensity, range is [0-8], 0 is off.
-         * @param val the brightness of the TM1637, eg: 7
+         * @param val PARA_INTENSITY_VAL
          */
-        //% blockId="TM1637_set_intensity" block="%tm|set intensity %val"
+        //% blockId="TM1637_set_intensity" block="FUNC_INTENSITY"
         //% weight=50 blockGap=8
         //% parts="TM1637"
         intensity(val: number = 7) {
@@ -138,17 +138,17 @@ namespace TM1637 {
          *   g
          * e   c
          *   d      
-         * @param a Segment a (oben)
-         * @param b Segment b (rechts oben)
-         * @param c Segment c (rechts unten)
-         * @param d Segment d (unten)
-         * @param e Segment e (links unten)
-         * @param f Segment f (links oben)
-         * @param g Segment g (Mitte)
-         * @param pos Stelle (0..3)
+         * @param a PARA_SEGMENTSAT_SEGMENTSAT_a
+         * @param b PARA_SEGMENTSAT_SEGMENTSAT_b
+         * @param c PARA_SEGMENTSAT_SEGMENTSAT_c
+         * @param d PARA_SEGMENTSAT_SEGMENTSAT_d
+         * @param e PARA_SEGMENTSAT_SEGMENTSAT_e
+         * @param f PARA_SEGMENTSAT_SEGMENTSAT_f
+         * @param g PARA_SEGMENTSAT_SEGMENTSAT_g
+         * @param pos PARA_SEGMENTSAT_POS
          */
         //% blockId="TM1637_segmentsAt"
-        //% block="$this(tm)|segments a %a b %b c %c d %d e %e f %f g %g|at %pos"
+        //% block="FUNC_SEGMENTSAT"
         //% inlineInputMode=inline
         //% weight=89 blockGap=8 advanced=true
         //% parts="TM1637" pos.min=0 pos.max=3 pos.dflt=0
@@ -180,10 +180,10 @@ namespace TM1637 {
          * - "8" (all segments a..g): 0b01111111
          * - "4" (b,c,f,g):           0b01100110
          *
-         * @param segments Segment-bitmask (binary recommended), e.g. 0b01111111
-         * @param pos Digit position (1..count)
+         * @param segments PARA_LIGHTSEGMENTSAT_SEGMENTS
+         * @param pos PARA_LIGHTSEGMENTSAT_POS
          */
-        //% blockId="TM1637_lightsegmentsat" block="$this(tm)|light segments (bits) %segments|at %pos"
+        //% blockId="TM1637_lightsegmentsat" block="FUNC_LIGHTSEGMENTSAT"
         //% weight=90 blockGap=8 advanced=true
         //% parts="TM1637" segments.dflt=0b01111111 pos.min=0 pos.max=3 pos.dflt=0
         lightSegmentsAt(segments: number = 0b01111111, pos: number = 0) {
@@ -208,10 +208,10 @@ namespace TM1637 {
         
         /**
          * show a number in given position. 
-         * @param num number will show, eg: 5
-         * @param bit the position of the LED, eg: 0
+         * @param num PARA_SHOWBIT_NUM
+         * @param bit PARA_SHOWBIT_BIT
          */
-        //% blockId="TM1637_showbit" block="%tm|show digit %num |at %bit"
+        //% blockId="TM1637_showbit" block="FUNC_SHOWBIT"
         //% weight=90 blockGap=8
         //% parts="TM1637" num.min=-999 num.max=9999 bit.min=0 bit.max=3
         showbit(num: number = 5, bit: number = 0) {
@@ -221,9 +221,9 @@ namespace TM1637 {
 
         /**
           * show a number. 
-          * @param num is a number, eg: 0
+          * @param num PARA_SHOWNUMBERWITHLEADINGZEROS_NUM
           */
-        //% blockId="TM1637_shownumwithleadingzeros" block="%tm|show number %num with leading Zeros"
+        //% blockId="TM1637_shownumwithleadingzeros" block="FUNC_SHOWNUMBERWITHLEADINGZEROS"
         //% weight=91 blockGap=8
         //% parts="TM1637" num.min=-999 num.max=9999 num.dflt=0
         showNumberWithLeadingZeros(num: number) {
@@ -240,9 +240,9 @@ namespace TM1637 {
 
         /**
           * show a number with max 4 digits. 
-          * @param num is a number with max 4 digits, eg: 0
+          * @param num PARA_SHOWNUMBER_NUM
           */
-        //% blockId="TM1637_shownum" block="%tm|show number %num"
+        //% blockId="TM1637_shownum" block="FUNC_SHOWNUMBER"
         //% weight=92 blockGap=8
         //% parts="TM1637" num.min=-999 num.max=9999 num.dflt=0
         showNumber(num: number) {
@@ -268,9 +268,9 @@ namespace TM1637 {
 
         /**
           * show a hex number. 
-          * @param num is a hex number, eg: 0
+          * @param num PARA_SHOWHEX_NUM
           */
-        //% blockId="TM1637_showhex" block="%tm|show hex number %num"
+        //% blockId="TM1637_showhex" block="FUNC_SHOWHEX"
         //% weight=90 blockGap=8
         //% parts="TM1637"
         showHex(num: number) {
@@ -287,10 +287,10 @@ namespace TM1637 {
 
         /**
          * show or hide dot point. 
-         * @param bit is the position, eg: 1
-         * @param show is show/hide dp, eg: true
+         * @param bit PARA_SHOWDP_BIT
+         * @param show PARA_SHOWDP_SHOW
          */
-        //% blockId="TM1637_showDP" block="%tm|DotPoint at %bit|show %show"
+        //% blockId="TM1637_showDP" block="FUNC_SHOWDP"
         //% weight=70 blockGap=8
         //% parts="TM1637"
         showDP(bit: number = 1, show: boolean = true) {
@@ -302,7 +302,7 @@ namespace TM1637 {
         /**
          * clear LED. 
          */
-        //% blockId="TM1637_clear" block="clear %tm"
+        //% blockId="TM1637_clear" block="FUNC_CLEAR"
         //% weight=80 blockGap=8
         //% parts="TM1637"
         clear() {
@@ -315,7 +315,7 @@ namespace TM1637 {
         /**
          * turn on LED. 
          */
-        //% blockId="TM1637_on" block="turn on %tm"
+        //% blockId="TM1637_on" block="FUNC_ON"
         //% weight=86 blockGap=8
         //% parts="TM1637"
         on() {
@@ -327,7 +327,7 @@ namespace TM1637 {
         /**
          * turn off LED. 
          */
-        //% blockId="TM1637_off" block="turn off %tm"
+        //% blockId="TM1637_off" block="FUNC_OFF"
         //% weight=85 blockGap=8
         //% parts="TM1637"
         off() {

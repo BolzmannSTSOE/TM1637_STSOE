@@ -28,7 +28,7 @@
 "PARA_SHOWNUMBERWITHLEADINGZEROS_NUM": "Zahl, die angezeigt werden soll, z.B. 281",
 
 
-"FUNC_SHOWNUMBER": "%tm|Zeige die Zahl %num",
+FUNC_SHOWNUMBER: "%tm|Zeige die Zahl %num",
 "PARA_SHOWNUMBER_NUM": "Eine Zahl mit max. 4 Stellen, z.B. 1284",
 
 

@@ -148,7 +148,7 @@ namespace TM1637 {
 		 * e = links-unten 
 		 * f = links-oben     
 		 * g = Mitte 
-		 *
+		 * 
          * @param a Segment a (top)
          * @param b Segment b (right top)
          * @param c Segment c (right bottom)

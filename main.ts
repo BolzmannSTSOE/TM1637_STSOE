@@ -242,7 +242,7 @@ namespace TM1637 {
           * show a number with max 4 digits. 
           * @param num PARA_SHOWNUMBER_NUM
           */
-        //% blockId="TM1637_shownum" block=FUNC_SHOWNUMBER
+        //% blockId="TM1637_shownum" block="FUNC_SHOWNUMBER"
         //% weight=92 blockGap=8
         //% parts="TM1637" num.min=-999 num.max=9999 num.dflt=0
         showNumber(num: number) {

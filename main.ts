@@ -138,23 +138,17 @@ namespace TM1637 {
         }
         
         /**
-         * Build a segment mask from switches.
-         *
-		 * Segment-Belegung:
+         * Schaltet die Segmente a–g an einer Stelle des Displays ein oder aus.
 		 *
-		 *   a
-		 * f   b
-		 *   g
-		 * e   c
-		 *   d
+		 * Bedeutung der Segmente:
+		 * a = oben 
+		 * b = rechts-oben 
+		 * c = rechts-unten 
+		 * d = unten 
+		 * e = links-unten 
+		 * f = links-oben     
+		 * g = Mitte 
 		 *
-		 * a = oben
-		 * b = rechts oben
-		 * c = rechts unten
-		 * d = unten
-		 * e = links unten
-		 * f = links oben
-		 * g = Mitte
          * @param a Segment a (top)
          * @param b Segment b (right top)
          * @param c Segment c (right bottom)
@@ -162,11 +156,9 @@ namespace TM1637 {
          * @param e Segment e (left bottom)
          * @param f Segment f (left top)
          * @param g Segment g (middle)
-	 * @param pos Digit at display of TM1637, e.g. 0 (most left)
-	*/
+	 	 * @param pos Digit at display of TM1637, e.g. 0 (most left)
+		*/
         //% blockId="TM1637_segmentsAt" block="$this(tm)|segments a %a b %b c %c d %d e %e f %f g %g|at %pos"
-        //% jsdoc.loc.de="Schaltet die Segmente a–g an einer Stelle des Displays ein oder aus."
-        //% jsdoc.loc.en="Turns segments a–g on/off at a position." 
         //% block.loc.de="$this(tm)|Segmente a %a b %b c %c d %d e %e f %f g %g|an der Stelle %pos einschalten."
         //% block.loc.en="$this(tm)|segments a %a b %b c %c d %d e %e f %f g %g|at %pos"
         //% a.loc.de="Segment a (oben)"
@@ -439,27 +431,6 @@ namespace TM1637 {
         let tm = new TM1637LEDs(clk, dio, intensity, count);
         tm.init();
         return tm;
-	}
-	/**
-	 * Segment-Übersicht für das 7-Segment-Display:
-	 *
-	 * Bedeutung der Segmente:
-	 * a = oben 
-	 * b = rechts-oben 
-	 * c = rechts-unten 
-	 * d = unten 
-	 * e = links-unten 
-	 * f = links-oben 
-	 *    
-	 * g = Mitte 
-	 *
-	 * Dieser Block dient nur als Hilfe.
-	 */
-	 //% blockId="TM1637_segment_help"
-	 //% block="7-Segment Übersicht anzeigen"
-	 //% weight=81 advanced=true
-	export function segmentHelp(): void {
-		// absichtlich leer – reiner Hilfeblock
 	}
 
     

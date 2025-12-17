@@ -165,7 +165,7 @@ namespace TM1637 {
 	 * @param pos Digit at display of TM1637, e.g. 0 (most left)
 	*/
         //% blockId="TM1637_segmentsAt" block="$this(tm)|segments a %a b %b c %c d %d e %e f %f g %g|at %pos"
-        //% jsdoc.loc.de="Schaltet die Segmente a–g an einer Stelle des Displays ein oder aus.\n blan \r blar \r\n blarn <br> blabr || bla \\n blabbn \\r blabbr /n sn /r sr /r/n srsn //n ssn //r ssr"
+        //% jsdoc.loc.de="Schaltet die Segmente a–g an einer Stelle des Displays ein oder aus."
         //% jsdoc.loc.en="Turns segments a–g on/off at a position." 
         //% block.loc.de="$this(tm)|Segmente a %a b %b c %c d %d e %e f %f g %g|an der Stelle %pos einschalten."
         //% block.loc.en="$this(tm)|segments a %a b %b c %c d %d e %e f %f g %g|at %pos"
@@ -462,8 +462,6 @@ namespace TM1637 {
 	 */
 	 //% blockId="TM1637_segment_help"
 	 //% block="7-Segment Übersicht anzeigen"
-	 //% jsdoc.loc.de="Übersicht der Segmente eines 7-Segment-Displays (a–g)."
-	 //% jsdoc.loc.en="Overview of the segments of a 7-segment display (a–g)."
 	 //% weight=81 advanced=true
 	export function segmentHelp(): void {
 		// absichtlich leer – reiner Hilfeblock

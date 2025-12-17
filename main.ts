@@ -200,6 +200,35 @@ namespace TM1637 {
             //if (dp) mask |= 1 << 7
             this.lightSegmentsAt(mask, pos)
         }
+		
+		/**
+		 * Segment-Übersicht für das 7-Segment-Display:
+		 *
+		 *   a
+		 * f   b
+		 *   g
+		 * e   c
+		 *   d
+		 *
+		 * Bedeutung der Segmente:
+		 * a = oben
+		 * b = rechts oben
+		 * c = rechts unten
+		 * d = unten
+		 * e = links unten
+		 * f = links oben
+		 * g = Mitte
+		 *
+		 * Dieser Block dient nur als Hilfe.
+		 */
+		 //% blockId="TM1637_segment_help"
+		 //% block="7-Segment Übersicht anzeigen"
+		 //% jsdoc.loc.de="Übersicht der Segmente eines 7-Segment-Displays (a–g)."
+		 //% jsdoc.loc.en="Overview of the segments of a 7-segment display (a–g)."
+		 //% weight=81 advanced=true
+		export function segmentHelp(): void {
+		    // absichtlich leer – reiner Hilfeblock
+		}
 
 
         /**

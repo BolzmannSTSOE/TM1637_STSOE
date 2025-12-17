@@ -101,19 +101,26 @@ namespace TM1637 {
 
         /**
          * set TM1637 intensity, range is [0-8], 0 is off.
-         * @param val PARA_INTENSITY_VAL
-         */
-        //% blockId="TM1637_set_intensity" block="FUNC_INTENSITY"
+         * @param val the brightness of the TM1637, eg: 7
+	 */
+        //% blockId="TM1637_set_intensity" block="%tm|set intensity to %val"
+        //% jsdoc.loc.de="Stellt die Helligkeit des Displays ein 0..7 (-1 = aus, 0 = dunkel, 7 = hell)."
+        //% jsdoc.loc.en="Sets the display brightness (-1 = off, 7 = bright)."
+        //% block.loc.de="%tm|Setze die Helligkeit auf %val"
+        //% block.loc.en="%tm|set intensity to %val"
+        //% val.loc.de="Die Helligkeit des Displays TM1637."
+        //% val.loc.en="the brightness of the TM1637, eg: 7"
         //% weight=50 blockGap=8
-        //% parts="TM1637"
+        //% parts="TM1637" val.min=-1 val.max=7 val.dflt=7
         intensity(val: number = 7) {
-            if (val < 1) {
-                this.off();
+            if (val < 0) {
+                // this.off();
+		this.clear();
                 return;
             }
-            if (val > 8) val = 8;
+            if (val > 7) val = 7;
             this._ON = 8;
-            this.brightness = val - 1;
+            this.brightness = val;
             this._write_data_cmd();
             this._write_dsp_ctrl();
         }
@@ -138,21 +145,40 @@ namespace TM1637 {
          *   g
          * e   c
          *   d      
-         * @param a PARA_SEGMENTSAT_SEGMENTSAT_a
-         * @param b PARA_SEGMENTSAT_SEGMENTSAT_b
-         * @param c PARA_SEGMENTSAT_SEGMENTSAT_c
-         * @param d PARA_SEGMENTSAT_SEGMENTSAT_d
-         * @param e PARA_SEGMENTSAT_SEGMENTSAT_e
-         * @param f PARA_SEGMENTSAT_SEGMENTSAT_f
-         * @param g PARA_SEGMENTSAT_SEGMENTSAT_g
-         * @param pos PARA_SEGMENTSAT_POS
-         */
-        //% blockId="TM1637_segmentsAt"
-        //% block="FUNC_SEGMENTSAT"
+         * @param a Segment a (top)
+         * @param b Segment b (right top)
+         * @param c Segment c (right bottom)
+         * @param d Segment d (bottom)
+         * @param e Segment e (left bottom)
+         * @param f Segment f (left top)
+         * @param g Segment g (middle)
+	 * @param pos Digit at display of TM1637, e.g. 0 (most left)
+	*/
+        //% blockId="TM1637_segmentsAt" block="$this(tm)|segments a %a b %b c %c d %d e %e f %f g %g|at %pos"
+        //% jsdoc.loc.de="Schaltet die Segmente a–g an einer Stelle des Displays ein oder aus."
+        //% jsdoc.loc.en="Turns segments a–g on/off at a position." 
+        //% block.loc.de="$this(tm)|Segmente a %a b %b c %c d %d e %e f %f g %g|an der Stelle %pos einschalten."
+        //% block.loc.en="$this(tm)|segments a %a b %b c %c d %d e %e f %f g %g|at %pos"
+        //% a.loc.de="Segment a (oben)"
+        //% a.loc.en="Segment a (top)"
+        //% b.loc.de="Segment b (rechts oben)"
+        //% b.loc.en="Segment b (right top)"
+        //% c.loc.de="Segment c (rechts unten)"
+        //% c.loc.en="Segment c (right bottom)"
+        //% d.loc.de="Segment d (unten)"
+        //% d.loc.en="Segment d (bottom)"
+        //% e.loc.de="Segment e (links unten)"
+        //% e.loc.en="Segment e (left bottom)"
+        //% f.loc.de="Segment f (links oben)"
+        //% f.loc.en="Segment f (left top)"
+        //% g.loc.de="Segment g (Mitte)"
+        //% g.loc.en="Segment g (middle)"
+        //% pos.loc.de="Stelle im Display des TM1637, z.B. 0 (ganz links)"
+        //% pos.loc.en="Digit at display of TM1637, e.g. 0 (most left)"
         //% inlineInputMode=inline
         //% weight=89 blockGap=8 advanced=true
         //% parts="TM1637" pos.min=0 pos.max=3 pos.dflt=0
-        segmentsAt(a: boolean, b: boolean, c: boolean, d: boolean, e: boolean, f: boolean, g: boolean, pos: number = 1) {
+        segmentsAt(a: boolean, b: boolean, c: boolean, d: boolean, e: boolean, f: boolean, g: boolean, pos: number = 0) {
             let mask = 0
             if (a) mask |= 1 << 0
             if (b) mask |= 1 << 1
@@ -164,6 +190,8 @@ namespace TM1637 {
             //if (dp) mask |= 1 << 7
             this.lightSegmentsAt(mask, pos)
         }
+
+
         /**
          * Light indicated segments (bitmask) at given position.
          *
@@ -177,13 +205,20 @@ namespace TM1637 {
          *   d      
          *
          * Example:
-         * - "8" (all segments a..g): 0b01111111
-         * - "4" (b,c,f,g):           0b01100110
-         *
-         * @param segments PARA_LIGHTSEGMENTSAT_SEGMENTS
-         * @param pos PARA_LIGHTSEGMENTSAT_POS
-         */
-        //% blockId="TM1637_lightsegmentsat" block="FUNC_LIGHTSEGMENTSAT"
+         * "8" (all segments a..g): 0b01111111
+         * "4" (b,c,f,g):           0b01100110
+         * @param segments Segment-bitmask (binary recommended), e.g. 0b01111111 for 8 or 0b01100110 for 4
+         * @param pos Digit position (0..count-1)
+	*/
+        //% blockId="TM1637_lightsegmentsat" block="$this(tm)|light segments (bits) %segments|at %pos"
+        //% jsdoc.loc.de="Zeigt Segmente über eine Bitmaske an (für Fortgeschrittene)."
+        //% jsdoc.loc.en="Lights segments using a bitmask (advanced)."
+        //% block.loc.de="$this(tm)|Segmente (binär) %segments|der Stelle %pos einschalten."
+        //% block.loc.en="$this(tm)|light segments (bits) %segments|at %pos"
+        //% segments.loc.de="Segment-BitMaske (empfohlen binär), z.B. 0b01111111 für 8 oder 0b01100110 für 4"
+        //% segments.loc.en="Segment-bitmask (binary recommended), e.g. 0b01111111 for 8 or 0b01100110 for 4"
+        //% pos.loc.de="Stelle im Display des TM1637, z.B. 0 (ganz links)"
+        //% pos.loc.en="Digit position (0..count-1)"
         //% weight=90 blockGap=8 advanced=true
         //% parts="TM1637" segments.dflt=0b01111111 pos.min=0 pos.max=3 pos.dflt=0
         lightSegmentsAt(segments: number = 0b01111111, pos: number = 0) {
@@ -191,27 +226,21 @@ namespace TM1637 {
             this._dat(pos, segments & 0xFF)
         }
 
-        /**
-         * light indicated segments at given position.
-         * @param segments segments to light, eg: 0x7F
-         * @param pos the position of the digit, eg: 0
-         */
-/*        //% blockId="TM1637_lightsegmentsat" block="$this(tm)|light segments %segments |at %pos"
-        //% weight=90 blockGap=8 advanced=true
-        //% parts="TM1637" segments.dflt=0x7F pos.min=1 pos.max=6 pos.dflt=4
-        lightSegmentsAt(segments: number = 0x7F, pos: number = 1) {
-            pos-- //position in TM1637 indexed from 0
-            this.buf[pos % this.count] = segments % 256
-            this._dat(pos, segments % 256)
-        }
-*/
         
         /**
-         * show a number in given position. 
-         * @param num PARA_SHOWBIT_NUM
-         * @param bit PARA_SHOWBIT_BIT
-         */
-        //% blockId="TM1637_showbit" block="FUNC_SHOWBIT"
+         * show a number in given position.
+         * @param num Number to be shown, e.g. 5
+         * @param bit Digit position, e.g. 0 (most left)
+	*/
+        //% blockId="TM1637_showbit" block="%tm|show number %num |at %bit"
+        //% jsdoc.loc.de="Zeigt eine einzelne Ziffer an einer bestimmten Stelle."
+        //% jsdoc.loc.en="Shows a single digit at a given position."
+        //% block.loc.de="%tm|Setze die Ziffer %num |an die Stelle %bit"
+        //% block.loc.en="%tm|show number %num |at %bit"
+        //% num.loc.de="Ziffer, die angezeigt werden soll, z.B. 5"
+        //% num.loc.en="Number to be shown, e.g. 5"
+        //% bit.loc.de="Stelle im Display des TM1637, z.B. 0 (ganz links)"
+        //% bit.loc.en="Digit position, e.g. 0 (most left)"
         //% weight=90 blockGap=8
         //% parts="TM1637" num.min=-999 num.max=9999 bit.min=0 bit.max=3
         showbit(num: number = 5, bit: number = 0) {
@@ -221,9 +250,15 @@ namespace TM1637 {
 
         /**
           * show a number. 
-          * @param num PARA_SHOWNUMBERWITHLEADINGZEROS_NUM
-          */
-        //% blockId="TM1637_shownumwithleadingzeros" block="FUNC_SHOWNUMBERWITHLEADINGZEROS"
+          * @param num Number to be shown, e.g. 281
+	*/
+        //% blockId="TM1637_shownumwithleadingzeros" block="%tm|show number %num with leading zeros"
+        //% jsdoc.loc.de="Zeigt eine Zahl auf dem Display an, z.B. 28 als 0028."
+        //% jsdoc.loc.en="Shows a number on the display."
+        //% block.loc.de="%tm|Zeige die Zahl %num und fülle vorne mit Nullen auf."
+        //% block.loc.en="%tm|show number %num with leading zeros"
+        //% num.loc.de="Zahl, die angezeigt werden soll, z.B. 281"
+        //% num.loc.en="Number to be shown, e.g. 281"
         //% weight=91 blockGap=8
         //% parts="TM1637" num.min=-999 num.max=9999 num.dflt=0
         showNumberWithLeadingZeros(num: number) {
@@ -240,9 +275,15 @@ namespace TM1637 {
 
         /**
           * show a number with max 4 digits. 
-          * @param num PARA_SHOWNUMBER_NUM
-          */
-        //% blockId="TM1637_shownum" block="FUNC_SHOWNUMBER"
+          * @param num is a number with max 4 digits, eg: 1284
+	*/
+        //% blockId="TM1637_shownum" block="%tm|show number %num"
+        //% jsdoc.loc.de="Zeigt eine Zahl auf dem Display an."
+        //% jsdoc.loc.en="Shows a number on the display."
+        //% block.loc.de="%tm|Zeige die Zahl %num"
+        //% block.loc.en="%tm|show number %num"
+        //% num.loc.de="Eine Zahl mit max. 4 Stellen, z.B. 1284"
+        //% num.loc.en="is a number with max 4 digits, eg: 1284"
         //% weight=92 blockGap=8
         //% parts="TM1637" num.min=-999 num.max=9999 num.dflt=0
         showNumber(num: number) {
@@ -268,9 +309,15 @@ namespace TM1637 {
 
         /**
           * show a hex number. 
-          * @param num PARA_SHOWHEX_NUM
-          */
-        //% blockId="TM1637_showhex" block="FUNC_SHOWHEX"
+          * @param num a hex number, e.g. 0xA7F
+	*/
+        //% blockId="TM1637_showhex" block="%tm|show hex number %num"
+        //% jsdoc.loc.de="Zeigt eine Zahl im Hex-Format (0–F) an."
+        //% jsdoc.loc.en="Shows a number in hex (0–F)."
+        //% block.loc.de="%tm|Zeige die Hexadezimalzahl %num"
+        //% block.loc.en="%tm|show hex number %num"
+        //% num.loc.de="Eine Hexadezimalzahl, z.B. 0xA7F"
+        //% num.loc.en="a hex number, e.g. 0xA7F"
         //% weight=90 blockGap=8
         //% parts="TM1637"
         showHex(num: number) {
@@ -287,10 +334,18 @@ namespace TM1637 {
 
         /**
          * show or hide dot point. 
-         * @param bit PARA_SHOWDP_BIT
-         * @param show PARA_SHOWDP_SHOW
-         */
-        //% blockId="TM1637_showDP" block="FUNC_SHOWDP"
+         * @param bit is the position, eg: 1
+         * @param show is show/hide dp, eg: true
+	*/
+        //% blockId="TM1637_showDP" block="%tm|DotPoint at %bit|show %show"
+        //% jsdoc.loc.de="Schaltet den Dezimalpunkt (oder Doppelpunkt) ein oder aus."
+        //% jsdoc.loc.en="Shows or hides the dot point."
+        //% block.loc.de="%tm|Dezimalpunkt rechts der Stelle %bit| setzen %show"
+        //% block.loc.en="%tm|DotPoint at %bit|show %show"
+        //% bit.loc.de="Stelle im Display, von der rechts der Punkt angezeigt werden soll, z.B. 1"
+        //% bit.loc.en="is the position, eg: 1"
+        //% show.loc.de="EIN = Wahr, AUS = Falsch"
+        //% show.loc.en="is show/hide dp, eg: true"
         //% weight=70 blockGap=8
         //% parts="TM1637"
         showDP(bit: number = 1, show: boolean = true) {
@@ -302,7 +357,11 @@ namespace TM1637 {
         /**
          * clear LED. 
          */
-        //% blockId="TM1637_clear" block="FUNC_CLEAR"
+        //% blockId="TM1637_clear" block="clear all digits of %tm"
+        //% jsdoc.loc.de="Löscht die Anzeige (alle Segmente aus)."
+        //% jsdoc.loc.en="Clears the display (all segments off)."
+        //% block.loc.de="Lösche alle Stellen des Displays %tm"
+        //% block.loc.en="clear all digits of %tm"
         //% weight=80 blockGap=8
         //% parts="TM1637"
         clear() {
@@ -315,7 +374,11 @@ namespace TM1637 {
         /**
          * turn on LED. 
          */
-        //% blockId="TM1637_on" block="FUNC_ON"
+        //% blockId="TM1637_on" block="turn on %tm"
+        //% jsdoc.loc.de="Schaltet das Display ein."
+        //% jsdoc.loc.en="Turns the display on."
+        //% block.loc.de="Schalte das Display %tm ein."
+        //% block.loc.en="turn on %tm"
         //% weight=86 blockGap=8
         //% parts="TM1637"
         on() {
@@ -327,7 +390,11 @@ namespace TM1637 {
         /**
          * turn off LED. 
          */
-        //% blockId="TM1637_off" block="FUNC_OFF"
+        //% blockId="TM1637_off" block="turn off %tm"
+        //% jsdoc.loc.de="Schaltet das Display aus."
+        //% jsdoc.loc.en="Turns the display off."
+        //% block.loc.de="Schalte das Display %tm aus."
+        //% block.loc.en="turn off %tm"
         //% weight=85 blockGap=8
         //% parts="TM1637"
         off() {
@@ -346,7 +413,17 @@ namespace TM1637 {
      */
     //% weight=200 blockGap=8
     //% blockId="TM1637_create" block="CLK %clk|DIO %dio|brightness %intensity|digit count %count"
-    //% inlineInputMode=inline count.min=1 count.max=4 count.dflt=4 intensity.min=0 intensity.max=8 intensity.dflt=7
+    //% block.loc.de="CLK %clk|DIO %dio|Helligkeit %intensity|Anzahl Stellen %count"
+    //% block.loc.en="CLK %clk|DIO %dio|brightness %intensity|digit count %count"
+    //% clk.loc.de="Pin für das Clock Signal (CLK)"
+    //% clk.loc.en="Pin used for Clock Signal (CLK)"
+    //% dio.loc.de="Pin für das Daten Signal (DIO)"
+    //% dio.loc.en="Pin used for Data Signal (DIO)"
+    //% intensity.loc.de="Helligkeit des Displays (0..7)"
+    //% intensity.loc.en="Intensity of display (0..7)"
+    //% count.loc.de="Anzahl der Stellen des Displays, z.B. 4"
+    //% count.loc.en="Count of digits of display, e.g. 4"
+    //% inlineInputMode=inline count.min=1 count.max=4 count.dflt=4 intensity.min=0 intensity.max=7 intensity.dflt=7
     //% blockSetVariable=tm
     export function create(clk: DigitalPin, dio: DigitalPin, intensity: number, count: number = 4): TM1637LEDs {
         let tm = new TM1637LEDs(clk, dio, intensity, count);

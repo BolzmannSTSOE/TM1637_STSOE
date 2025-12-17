@@ -165,7 +165,7 @@ namespace TM1637 {
 	 * @param pos Digit at display of TM1637, e.g. 0 (most left)
 	*/
         //% blockId="TM1637_segmentsAt" block="$this(tm)|segments a %a b %b c %c d %d e %e f %f g %g|at %pos"
-        //% jsdoc.loc.de="Schaltet die Segmente a–g an einer Stelle des Displays ein oder aus."
+        //% jsdoc.loc.de="Schaltet die Segmente a–g an einer Stelle des Displays ein oder aus.|Segmente"
         //% jsdoc.loc.en="Turns segments a–g on/off at a position." 
         //% block.loc.de="$this(tm)|Segmente a %a b %b c %c d %d e %e f %f g %g|an der Stelle %pos einschalten."
         //% block.loc.en="$this(tm)|segments a %a b %b c %c d %d e %e f %f g %g|at %pos"

@@ -149,6 +149,12 @@ namespace TM1637 {
 		 * f = links-oben     
 		 * g = Mitte 
 		 * 
+		 *   a
+		 * f   b
+		 *   g
+		 * e   c
+		 *   d
+		 * 
          * @param a Segment a (top)
          * @param b Segment b (right top)
          * @param c Segment c (right bottom)
@@ -159,8 +165,8 @@ namespace TM1637 {
 	 	 * @param pos Digit at display of TM1637, e.g. 0 (most left)
 		*/
         //% blockId="TM1637_segmentsAt" block="$this(tm)|segments a %a b %b c %c d %d e %e f %f g %g|at %pos"
-        //% block.loc.de="$this(tm)|Segmente a %a b %b c %c d %d e %e f %f g %g|an der Stelle %pos einschalten."
-        //% block.loc.en="$this(tm)|segments a %a b %b c %c d %d e %e f %f g %g|at %pos"
+        //% block.loc.de="$this(tm)|Segmente:| a %a b %b c %c d %d e %e f %f g %g|an der Stelle %pos einschalten."
+        //% block.loc.en="$this(tm)|segments:| a %a b %b c %c d %d e %e f %f g %g|at %pos"
         //% a.loc.de="Segment a (oben)"
         //% a.loc.en="Segment a (top)"
         //% b.loc.de="Segment b (rechts oben)"

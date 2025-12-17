@@ -213,7 +213,7 @@ namespace TM1637 {
          * @param pos Digit position (0..count-1)
 	*/
         //% blockId="TM1637_lightsegmentsat" block="$this(tm)|light segments (bits) %segments|at %pos"
-        //% jsdoc.loc.de="Zeigt Segmente über eine Bitmaske an (für Fortgeschrittene)."
+        //% jsdoc.loc.de="Zeigt Segmente über eine Bitmaske an (für Fortgeschrittene), z.B. 0b01111111 für 8 oder 0b01100110 für 4."
         //% jsdoc.loc.en="Lights segments using a bitmask (advanced)."
         //% block.loc.de="$this(tm)|Segmente (binär) %segments|der Stelle %pos einschalten."
         //% block.loc.en="$this(tm)|light segments (bits) %segments|at %pos"

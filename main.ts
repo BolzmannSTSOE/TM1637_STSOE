@@ -443,20 +443,15 @@ namespace TM1637 {
 	/**
 	 * Segment-Übersicht für das 7-Segment-Display:
 	 *
-	 *   a
-	 * f   b
-	 *   g
-	 * e   c
-	 *   d
-	 *
 	 * Bedeutung der Segmente:
-	 * a = oben
-	 * b = rechts oben
-	 * c = rechts unten
-	 * d = unten
-	 * e = links unten
-	 * f = links oben
-	 * g = Mitte
+	 * a = oben 
+	 * b = rechts-oben 
+	 * c = rechts-unten 
+	 * d = unten 
+	 * e = links-unten 
+	 * f = links-oben 
+	 *    
+	 * g = Mitte 
 	 *
 	 * Dieser Block dient nur als Hilfe.
 	 */

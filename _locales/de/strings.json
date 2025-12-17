@@ -24,7 +24,7 @@
 "PARA_SHOWBIT_BIT": "Stelle im Display des TM1637, z.B. 0 (ganz links)",
 
 
-"FUNC_SHOWNUMBERWITHLEADINGZEROS": ""%tm|Zeige die Zahl %num und fülle vorne mit Nullen auf.",
+"FUNC_SHOWNUMBERWITHLEADINGZEROS": "%tm|Zeige die Zahl %num und fülle vorne mit Nullen auf.",
 "PARA_SHOWNUMBERWITHLEADINGZEROS_NUM": "Zahl, die angezeigt werden soll, z.B. 281",
 
 

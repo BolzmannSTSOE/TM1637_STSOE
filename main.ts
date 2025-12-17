@@ -439,7 +439,7 @@ namespace TM1637 {
         let tm = new TM1637LEDs(clk, dio, intensity, count);
         tm.init();
         return tm;
-	
+	}
 	/**
 	 * Segment-Übersicht für das 7-Segment-Display:
 	 *
@@ -469,5 +469,5 @@ namespace TM1637 {
 		// absichtlich leer – reiner Hilfeblock
 	}
 
-    }
+    
 }

@@ -502,7 +502,7 @@ namespace TM1637 {
         if (!text) return -1;
 
         // remove spaces and underscores
-        let s = stripSeparators(text);
+        let s = _stripSeparators(text);
         if (s.length == 0) return -1;
 
         // sign negative is invalid
@@ -517,7 +517,7 @@ namespace TM1637 {
         if (s.length >= 2 && (s.substr(0, 2) == "0b" || s.substr(0, 2) == "0B")) {
             let bits = s.substr(2);
             if (bits.length == 0) return -1;
-            if (!isBinDigits(bits)) return -1; // if bits contains any other than 0 or 1
+            if (!_isBinDigits(bits)) return -1; // if bits contains any other than 0 or 1
 			
             // keep last 7 bin digits if longer
             if (bits.length > 7) bits = bits.substr(bits.length - 7);
@@ -531,7 +531,7 @@ namespace TM1637 {
         if (s.length >= 2 && (s.substr(0, 2) == "0x" || s.substr(0, 2) == "0X")) {
             let hex = s.substr(2);
             if (hex.length == 0) return -1;
-            if (!isHexDigits(hex)) return -1; // if hex contains any other than allowed hex letters
+            if (!_isHexDigits(hex)) return -1; // if hex contains any other than allowed hex letters
 
             // keep last 2 hex digits if longer
             if (hex.length > 2) hex = hex.substr(hex.length - 2);
@@ -554,7 +554,7 @@ namespace TM1637 {
         if (!text) return -1;
 
         // remove spaces and underscores
-        let s = stripSeparators(text);
+        let s = _stripSeparators(text);
         if (s.length == 0) return -1;
 
         // sign negative is invalid
@@ -569,7 +569,7 @@ namespace TM1637 {
         if (s.length >= 2 && (s.substr(0, 2) == "0x" || s.substr(0, 2) == "0X")) {
             let hex = s.substr(2);
             if (hex.length == 0) return -1;
-            if (!isHexDigits(hex)) return -1; // if hex contains any other than allowed hex letters
+            if (!_isHexDigits(hex)) return -1; // if hex contains any other than allowed hex letters
 
             // keep last 'digitCount' hex digits if longer
             if (hex.length > digitCount) hex = hex.substr(hex.length - digitCount);

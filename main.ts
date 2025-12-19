@@ -325,13 +325,13 @@ namespace TM1637 {
         //% weight=50 blockGap=8
         //% parts="TM1637" num.min=-999 num.max=9999 num.dflt=1284
         showNumber(num: number) {
-			this.clear()			
+			//this.clear()			
 			let sign = 0
             if (num < 0) {
 				sign = -1
                 num = -num
             }
-			for (let i = 0; i < this.count + sign; i++) {
+			for (let i = 0; i < this.count; i++) {
 				if (num >= 10**i) this.showbit(Math.idiv(num, 10**i) % 10, this.count-1-i); 
 				else this.showbit(-1, this.count-1-i);
 			}

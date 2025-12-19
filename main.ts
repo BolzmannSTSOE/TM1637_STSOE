@@ -136,6 +136,21 @@ namespace TM1637 {
             this._stop();
             this._write_dsp_ctrl();
         }
+
+		/**
+		* Send 'Error' to the TM1637, or at least as many digits as possible.
+		*/
+		_errorHandling() {			
+			let ErrorMask = [0b1111001, 0b1010000, 0b1010000, 0b1011100, 0b1010000];
+			let counttmp = 0
+			for (let i = 0; i < Math.min(this.count,5); i++) {
+				this._dat(i, ErrorMask[i])
+				counttmp++
+			}
+			for (let i = counttmp; i < this.count; i++) {
+				this._dat(i, 0)
+			}
+		}
         
         /**
          * Schaltet die Segmente a–g an einer Stelle des Displays ein oder aus.
@@ -192,44 +207,56 @@ namespace TM1637 {
             if (e) mask |= 1 << 4
             if (f) mask |= 1 << 5
             if (g) mask |= 1 << 6
-            //if (dp) mask |= 1 << 7
-            this.lightSegmentsAt(mask, pos)
+            //if (dp) mask |= 1 << 7			
+            this.buf[pos % this.count] = mask & 0xFF
+            this._dat(pos, mask & 0xFF)
         }
 		
 
         /**
          * Light indicated segments (bitmask) at given position.
          *
-         * Segment bits (MSB -> LSB):
+		 * Bedeutung der Segmente:
+		 * a = oben 
+		 * b = rechts-oben 
+		 * c = rechts-unten 
+		 * d = unten 
+		 * e = links-unten 
+		 * f = links-oben     
+		 * g = Mitte 
+		 * 
+         * | Segment bits (MSB -> LSB): 
          * bit6=g, bit5=f, bit4=e, bit3=d, bit2=c, bit1=b, bit0=a
-         *
-         *   a
-         * f   b
-         *   g
-         * e   c
-         *   d      
          *
          * Example:
          * "8" (all segments a..g): 0b01111111
          * "4" (b,c,f,g):           0b01100110
-         * @param segments Segment-bitmask (binary recommended), e.g. 0b01111111 for 8 or 0b01100110 for 4
+         * @param segmentsText Segment-bitmask (binary recommended), eg: "0b01110110"
          * @param pos Digit position (0..count-1), eg: 0
 	*/
-        //% blockId="TM1637_lightsegmentsat" block="$this(tm)|light segments (bits) %segments|at %pos"
-        //% jsdoc.loc.de="Zeigt Segmente über eine Bitmaske an (für Fortgeschrittene), z.B. 0b01111111 für 8 oder 0b01100110 für 4."
+        //% blockId="TM1637_lightsegmentsat" block="$this(tm)|light segments (bits) %segmentsText|at %pos"
+        //% jsdoc.loc.de="Zeigt Segmente über eine Bitmaske an (für Fortgeschrittene), z.B. 0b01110110 für H oder 0b01100110 für 4."
         //% jsdoc.loc.en="Lights segments using a bitmask (advanced)."
-        //% block.loc.de="$this(tm)|Segmente (binär) %segments|der Stelle %pos einschalten."
-        //% block.loc.en="$this(tm)|light segments (bits) %segments|at %pos"
-        //% segments.loc.de="Segment-BitMaske (empfohlen binär), z.B. 0b01111111 für 8 oder 0b01100110 für 4"
-        //% segments.loc.en="Segment-bitmask (binary recommended), e.g. 0b01111111 for 8 or 0b01100110 for 4"
+        //% block.loc.de="$this(tm)|Segmente (binär) %segmentsText|der Stelle %pos einschalten."
+        //% block.loc.en="$this(tm)|light segments (bits) %segmentsText|at %pos"
+        //% segmentsText.loc.de="Segment-BitMaske (empfohlen binär), z.B. 0b01111111 für 8 oder 0b01100110 für 4"
+        //% segmentsText.loc.en="Segment-bitmask (binary recommended), e.g. 0b01111111 for 8 or 0b01100110 for 4"
         //% pos.loc.de="Stelle im Display des TM1637, z.B. 0 (ganz links)"
         //% pos.loc.en="Digit position (0..count-1)"
         //% weight=80 blockGap=8 advanced=true
-        //% parts="TM1637" segments.dflt=0b01111111 pos.min=0 pos.max=3 pos.dflt=0
-        lightSegmentsAt(segments: number = 0b01111111, pos: number = 0) {
-            this.buf[pos % this.count] = segments & 0xFF
-            this._dat(pos, segments & 0xFF)
+		//% parts="TM1637" segmentsText.dflt="0b01110110" pos.min=0 pos.max=3 pos.dflt=0
+        //% segmentsText.shadow="text"
+        lightSegmentsAt(segmentsText: string = "0b01110110", pos: number = 0) {
+            let segments = parseBinText(segmentsText)
+			if (segments == -1) {
+				this._errorHandling()
+				return;
+			}
+            this.buf[pos % this.count] = segments & 0x7F
+            this._dat(pos, segments & 0x7F)
         }
+
+		
 
         
         /**
@@ -249,8 +276,13 @@ namespace TM1637 {
         //% weight=60 blockGap=8
         //% parts="TM1637" num.min=0 num.max=15 num.dflt=5 bit.min=0 bit.max=3
         showbit(num: number = 5, bit: number = 0) {
+		    if (num < 0) {
+		        this.buf[bit % this.count] = 0
+		        this._dat(bit % this.count, 0)
+		        return
+		    }
             this.buf[bit % this.count] = _SEGMENTS[num % 16]
-            this._dat(bit, _SEGMENTS[num % 16])
+            this._dat(bit % this.count, _SEGMENTS[num % 16])
         }
 
         /**
@@ -297,11 +329,14 @@ namespace TM1637 {
                 num = -num
             }
             else
-                if (num > 999) 
-                    this.showbit(Math.idiv(num, 1000) % 10, 0); else this.showbit(-1, 0);
-            if (num > 99) this.showbit(Math.idiv(num, 100) % 10, 1); else this.showbit(-1, 1);
-            if (num >  9) this.showbit(Math.idiv(num, 10) % 10, 2); else this.showbit(-1, 2);
-            if (num >= 0) this.showbit(num % 10, 3); else this.showbit(-1, 3);
+                if (num > 999) this.showbit(Math.idiv(num, 1000) % 10, 0); 
+				else this.showbit(-1, 0);
+            if (num > 99) this.showbit(Math.idiv(num, 100) % 10, 1); 
+			else this.showbit(-1, 1);
+            if (num >  9) this.showbit(Math.idiv(num, 10) % 10, 2); 
+			else this.showbit(-1, 2);
+            if (num >= 0) this.showbit(num % 10, 3); 
+			else this.showbit(-1, 3);
             /*
             else
                 if (num > 999) 
@@ -314,27 +349,32 @@ namespace TM1637 {
 
         /**
           * show a hex number. 
-          * @param num a hex number, eg: 0xA7F
+          * @param numText a hex number, eg: 0xA7F
 	*/
-        //% blockId="TM1637_showhex" block="%tm|show hex number %num"
+        //% blockId="TM1637_showhex" block="%tm|show hex number %numText"
         //% jsdoc.loc.de="Zeigt eine Zahl im Hex-Format (0–F) an."
         //% jsdoc.loc.en="Shows a number in hex (0–F)."
-        //% block.loc.de="%tm|Zeige die Hexadezimalzahl %num"
-        //% block.loc.en="%tm|show hex number %num"
-        //% num.loc.de="Eine Hexadezimalzahl, z.B. 0xA7F"
-        //% num.loc.en="a hex number, eg: 0xA7F"
+        //% block.loc.de="%tm|Zeige die Hexadezimalzahl %numText"
+        //% block.loc.en="%tm|show hex number %numText"
+        //% numText.loc.de="Eine Hexadezimalzahl, z.B. 0xA7F"
+        //% numText.loc.en="a hex number, eg: 0xA7F"
         //% weight=30 blockGap=8
         //% parts="TM1637"
-        showHex(num: number) {
-            if (num < 0) {
-                this._dat(0, 0x40) // '-'
-                num = -num
-            }
-            else
-                this.showbit((num >> 12) % 16)
-            this.showbit(num % 16, 3)
-            this.showbit((num >> 4) % 16, 2)
-            this.showbit((num >> 8) % 16, 1)
+		//% numText.shadow="text"
+        showHex(numText: string) {
+            let num = parseHexText(numText, this.count)
+			if (num == -1) {
+				this._errorHandling()
+				return;
+			}
+			if (num > 0xFFF) this.showbit(Math.idiv(num, 0x1000) % 16, 0); 
+			else this.showbit(-1,0);
+			if (num >  0xFF) this.showbit(Math.idiv(num, 0x100) % 16, 1); 
+			else this.showbit(-1,1);
+			if (num >   0xF) this.showbit(Math.idiv(num, 0x10) % 16, 2); 
+			else this.showbit(-1,2);
+			if (num >=  0x0) this.showbit(num % 16, 3); 
+			else this.showbit(-1,3);
         }
 
         /**
@@ -406,15 +446,105 @@ namespace TM1637 {
             this._ON = 0;
             this._write_data_cmd();
             this._write_dsp_ctrl();			
-        }
-
-
-
-        
-
+        }      
 		
     }
 
+	
+    /**
+     * Parse text in formats and convert to numbers:
+     * - 0b1010... (binary, only 0/1, NO negative allowed)
+     * - 0xA7F...  (hex, only 0-9/A-F/a-f, NO negative allowed, if >2 hex digits -> last 2 digits used)
+     * Returns -1 on invalid input.
+     */
+    function parseBinText(text: string): number {
+        if (!text) return -1;
+
+        // remove spaces and underscores
+        let s = text.replace(/\s+/g, "").replace(/_/g, "");
+        if (s.length == 0) return -1;
+
+        // sign negative is invalid
+        let sign = 1;
+        if (s.charAt(0) == "-") { sign = -1; s = s.substr(1); }
+        else if (s.charAt(0) == "+") { s = s.substr(1); }
+
+        if (s.length == 0) return -1;
+		if (sign < 0) return -1; // no negative numbers allowed.
+
+        // binary
+        if (s.length >= 2 && (s.substr(0, 2) == "0b" || s.substr(0, 2) == "0B")) {
+            let bits = s.substr(2);
+            if (bits.length == 0) return -1;
+            if (!/^[01]+$/.test(bits)) return -1; // if bits contains any other than 0 or 1
+			
+            // keep last 7 bin digits if longer
+            if (bits.length > 7) bits = bits.substr(bits.length - 7);
+			
+            let bitsnum =  parseInt(bits, 2);
+			if (isNaN(bitsnum)) return -1;
+			return bitsnum;
+        }
+
+        // hex
+        if (s.length >= 2 && (s.substr(0, 2) == "0x" || s.substr(0, 2) == "0X")) {
+            let hex = s.substr(2);
+            if (hex.length == 0) return -1;
+            if (!/^[0-9a-fA-F]+$/.test(hex)) return -1; // if hex contains any other than allowed hex letters
+
+            // keep last 2 hex digits if longer
+            if (hex.length > 2) hex = hex.substr(hex.length - 2);
+			if (hex.length == 0) return -1;
+
+			let hexNum = parseInt(hex, 16);
+			if (isNaN(hexNum)) return -1;
+			hexNum &= 0x7F
+			return hexNum;
+        }
+		return -1;
+    }
+
+    /**
+     * Parse text in formats and convert to numbers:
+     * - 0xA7F...  (hex, only 0-9/A-F/a-f, NO negative allowed, if >4 hex digits -> last 4 digits used)
+     * Returns -1 on invalid input.
+     */
+    function parseHexText(text: string, digitCount: number): number {
+        if (!text) return -1;
+
+        // remove spaces and underscores
+        let s = text.replace(/\s+/g, "").replace(/_/g, "");
+        if (s.length == 0) return -1;
+
+        // sign negative is invalid
+        let sign = 1;
+        if (s.charAt(0) == "-") { sign = -1; s = s.substr(1); }
+        else if (s.charAt(0) == "+") { s = s.substr(1); }
+
+        if (s.length == 0) return -1;
+		if (sign < 0) return -1; // no negative numbers allowed.
+
+        // hex
+        if (s.length >= 2 && (s.substr(0, 2) == "0x" || s.substr(0, 2) == "0X")) {
+            let hex = s.substr(2);
+            if (hex.length == 0) return -1;
+            if (!/^[0-9a-fA-F]+$/.test(hex)) return -1; // if hex contains any other than allowed hex letters
+
+            // keep last 'digitCount' hex digits if longer
+            if (hex.length > digitCount) hex = hex.substr(hex.length - digitCount);
+			if (hex.length == 0) return -1;
+
+			let hexNum = parseInt(hex, 16);
+			if (isNaN(hexNum)) return -1;
+			return hexNum;
+        }
+		return -1;		
+    }
+
+
+
+
+	
     /**
      * create a Digit Display (TM1637) object.
      * @param clk the CLK pin for TM1637, eg: DigitalPin.P0

@@ -449,6 +449,47 @@ namespace TM1637 {
         }      
 		
     }
+	
+
+	/**
+	* Helper function to strip whitespaces and underscores
+	*/
+	function _stripSeparators(text: string): string {
+	    let out = ""
+	    for (let i = 0; i < text.length; i++) {
+	        const c = text.charAt(i)
+	        // entfernt Leerzeichen, Tabs, CR/LF und _
+	        if (c == " " || c == "\t" || c == "\r" || c == "\n" || c == "_") continue
+	        out += c
+	    }
+	    return out
+	}
+	/**
+	* Helper function to check, if binary string contains only 0 and 1
+	*/
+	function _isBinDigits(s: string): boolean {
+	    if (s.length == 0) return false
+	    for (let i = 0; i < s.length; i++) {
+	        const c = s.charAt(i)
+	        if (c != "0" && c != "1") return false
+	    }
+	    return true
+	}
+	/**
+	* Helper function to check, if hex string contains only hex letters
+	*/
+	function _isHexDigits(s: string): boolean {
+	    if (s.length == 0) return false
+	    for (let i = 0; i < s.length; i++) {
+	        const code = s.charCodeAt(i)
+	        const is09 = (code >= 48 && code <= 57)
+	        const isAF = (code >= 65 && code <= 70)
+	        const isaf = (code >= 97 && code <= 102)
+	        if (!(is09 || isAF || isaf)) return false
+	    }
+	    return true
+	}
+
 
 	
     /**
@@ -461,7 +502,7 @@ namespace TM1637 {
         if (!text) return -1;
 
         // remove spaces and underscores
-        let s = text.replace(/\s+/g, "").replace(/_/g, "");
+        let s = stripSeparators(text);
         if (s.length == 0) return -1;
 
         // sign negative is invalid
@@ -476,7 +517,7 @@ namespace TM1637 {
         if (s.length >= 2 && (s.substr(0, 2) == "0b" || s.substr(0, 2) == "0B")) {
             let bits = s.substr(2);
             if (bits.length == 0) return -1;
-            if (!/^[01]+$/.test(bits)) return -1; // if bits contains any other than 0 or 1
+            if (!isBinDigits(bits)) return -1; // if bits contains any other than 0 or 1
 			
             // keep last 7 bin digits if longer
             if (bits.length > 7) bits = bits.substr(bits.length - 7);
@@ -490,7 +531,7 @@ namespace TM1637 {
         if (s.length >= 2 && (s.substr(0, 2) == "0x" || s.substr(0, 2) == "0X")) {
             let hex = s.substr(2);
             if (hex.length == 0) return -1;
-            if (!/^[0-9a-fA-F]+$/.test(hex)) return -1; // if hex contains any other than allowed hex letters
+            if (!isHexDigits(hex)) return -1; // if hex contains any other than allowed hex letters
 
             // keep last 2 hex digits if longer
             if (hex.length > 2) hex = hex.substr(hex.length - 2);
@@ -513,7 +554,7 @@ namespace TM1637 {
         if (!text) return -1;
 
         // remove spaces and underscores
-        let s = text.replace(/\s+/g, "").replace(/_/g, "");
+        let s = stripSeparators(text);
         if (s.length == 0) return -1;
 
         // sign negative is invalid
@@ -528,7 +569,7 @@ namespace TM1637 {
         if (s.length >= 2 && (s.substr(0, 2) == "0x" || s.substr(0, 2) == "0X")) {
             let hex = s.substr(2);
             if (hex.length == 0) return -1;
-            if (!/^[0-9a-fA-F]+$/.test(hex)) return -1; // if hex contains any other than allowed hex letters
+            if (!isHexDigits(hex)) return -1; // if hex contains any other than allowed hex letters
 
             // keep last 'digitCount' hex digits if longer
             if (hex.length > digitCount) hex = hex.substr(hex.length - digitCount);

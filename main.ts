@@ -159,7 +159,7 @@ namespace TM1637 {
          * @param e Segment e (left bottom)
          * @param f Segment f (left top)
          * @param g Segment g (middle)
-	 	 * @param pos Digit at display of TM1637, e.g. 0 (most left)
+	 	 * @param pos Digit at display of TM1637, eg: 0
 		*/
         //% blockId="TM1637_segmentsAt" block="$this(tm)|segments a %a b %b c %c d %d e %e f %f g %g|at %pos"
         //% block.loc.de="$this(tm)|Segmente:| a %a b %b c %c d %d e %e f %f g %g|an der Stelle %pos einschalten."
@@ -213,7 +213,7 @@ namespace TM1637 {
          * "8" (all segments a..g): 0b01111111
          * "4" (b,c,f,g):           0b01100110
          * @param segments Segment-bitmask (binary recommended), e.g. 0b01111111 for 8 or 0b01100110 for 4
-         * @param pos Digit position (0..count-1)
+         * @param pos Digit position (0..count-1), eg: 0
 	*/
         //% blockId="TM1637_lightsegmentsat" block="$this(tm)|light segments (bits) %segments|at %pos"
         //% jsdoc.loc.de="Zeigt Segmente über eine Bitmaske an (für Fortgeschrittene), z.B. 0b01111111 für 8 oder 0b01100110 für 4."
@@ -235,7 +235,7 @@ namespace TM1637 {
         /**
          * show a number in given position.
          * @param num Number to be shown, eg: 5
-         * @param bit Digit position, eg: 1
+         * @param bit Digit position, eg: 0
 	*/
         //% blockId="TM1637_showbit" block="%tm|show number %num |at %bit"
         //% jsdoc.loc.de="Zeigt eine einzelne Ziffer an einer bestimmten Stelle."
@@ -255,7 +255,7 @@ namespace TM1637 {
 
         /**
           * show a number. 
-          * @param num Number to be shown, e.g. 281
+          * @param num Number to be shown, eg: 281
 	*/
         //% blockId="TM1637_shownumwithleadingzeros" block="%tm|show number %num with leading zeros"
         //% jsdoc.loc.de="Zeigt eine Zahl auf dem Display an, z.B. 28 als 0028."
@@ -314,7 +314,7 @@ namespace TM1637 {
 
         /**
           * show a hex number. 
-          * @param num a hex number, e.g. 0xA7F
+          * @param num a hex number, eg: 0xA7F
 	*/
         //% blockId="TM1637_showhex" block="%tm|show hex number %num"
         //% jsdoc.loc.de="Zeigt eine Zahl im Hex-Format (0–F) an."

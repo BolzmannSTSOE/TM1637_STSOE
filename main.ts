@@ -422,18 +422,18 @@ namespace TM1637 {
         //% block.loc.de="%tm|Setze die Ziffer %num |an die Stelle %bit"
         //% block.loc.en="%tm|show number %num |at %bit"
         //% num.loc.de="Ziffer, die angezeigt werden soll, z.B. 5"
-        //% num.loc.en="Number to be shown, e.g. 5"
+        //% num.loc.en="Number to be shown, eg: 8"
         //% bit.loc.de="Stelle im Display des TM1637, z.B. 0 (ganz links)"
         //% bit.loc.en="Digit position, e.g. 0 (most left)"
         //% weight=8 blockGap=8
-        //% parts="TM1637" num.min=0 num.max=15 num.dflt=5 bit.min=0 bit.max=3
-        showbitParam(num: number = 5, bit: number = 0) {
+        //% parts="TM1637" num.min=0 num.max=15 num.dflt=9 bit.min=0 bit.max=3
+        showbitParam(num: number = 10, bit: number = 0) {
             this.buf[bit % this.count] = _SEGMENTS[num % 16]
             this._dat(bit, _SEGMENTS[num % 16])
         }
         /**
          * show a number in given position.
-         * @param num Number to be shown, eg: 8
+         * @param num Number to be shown, eg: 11
          * @param bit Digit position, eg: 0
 	*/
         //% blockId="TM1637_showbit" block="%tm|show number %num |at %bit"
@@ -446,14 +446,14 @@ namespace TM1637 {
         //% bit.loc.de="Stelle im Display des TM1637, z.B. 0 (ganz links)"
         //% bit.loc.en="Digit position, e.g. 0 (most left)"
         //% weight=6 blockGap=8
-        //% parts="TM1637" num.min=0 num.max=15 num.dflt=5 bit.min=0 bit.max=3
-        showbitnumlocen(num: number = 5, bit: number = 0) {
+        //% parts="TM1637" num.min=0 num.max=15 num.dflt=12 bit.min=0 bit.max=3
+        showbitnumlocen(num: number = 13, bit: number = 0) {
             this.buf[bit % this.count] = _SEGMENTS[num % 16]
             this._dat(bit, _SEGMENTS[num % 16])
         }
         /**
          * show a number in given position.
-         * @param num Number to be shown, eg: 9
+         * @param num Number to be shown, eg: 14
          * @param bit Digit position, eg: 0
 	*/
         //% blockId="TM1637_showbit" block="%tm|show number %num |at %bit"
@@ -462,18 +462,18 @@ namespace TM1637 {
         //% block.loc.de="%tm|Setze die Ziffer %num |an die Stelle %bit"
         //% block.loc.en="%tm|show number %num |at %bit"
         //% num.loc.de="Ziffer, die angezeigt werden soll, z.B. 5"
-        //% num.loc.en="Number to be shown, eg: 5"
+        //% num.loc.en="Number to be shown, eg: 15"
         //% bit.loc.de="Stelle im Display des TM1637, z.B. 0 (ganz links)"
         //% bit.loc.en="Digit position, e.g. 0 (most left)"
         //% weight=4 blockGap=8
         //% parts="TM1637" num.min=0 num.max=15 num.dflt=777 bit.min=0 bit.max=3
-        showbitParts(num: number = 5, bit: number = 0) {
+        showbitParts(num: number = 16, bit: number = 0) {
             this.buf[bit % this.count] = _SEGMENTS[num % 16]
             this._dat(bit, _SEGMENTS[num % 16])
         }
         /**
          * show a number in given position.
-         * @param num Number to be shown, eg: 10
+         * @param num Number to be shown, eg: 17
          * @param bit Digit position, eg: 0
 	*/
         //% blockId="TM1637_showbit" block="%tm|show number %num |at %bit"
@@ -482,11 +482,11 @@ namespace TM1637 {
         //% block.loc.de="%tm|Setze die Ziffer %num |an die Stelle %bit"
         //% block.loc.en="%tm|show number %num |at %bit"
         //% num.loc.de="Ziffer, die angezeigt werden soll, z.B. 5"
-        //% num.loc.en="Number to be shown, eg: 5"
+        //% num.loc.en="Number to be shown, eg: 18"
         //% bit.loc.de="Stelle im Display des TM1637, z.B. 0 (ganz links)"
         //% bit.loc.en="Digit position, e.g. 0 (most left)"
         //% weight=2 blockGap=8
-        //% parts="TM1637" num.min=0 num.max=15 num.dflt=5 bit.min=0 bit.max=3
+        //% parts="TM1637" num.min=0 num.max=15 num.dflt=19 bit.min=0 bit.max=3
         showbitFuncpara(num: number = 777, bit: number = 0) {
             this.buf[bit % this.count] = _SEGMENTS[num % 16]
             this._dat(bit, _SEGMENTS[num % 16])

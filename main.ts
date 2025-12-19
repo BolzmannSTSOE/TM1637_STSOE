@@ -234,8 +234,8 @@ namespace TM1637 {
         
         /**
          * show a number in given position.
-         * @param num Number to be shown, eg. 5
-         * @param bit Digit position, eg. 1 (most left)
+         * @param num Number to be shown, eg: 5
+         * @param bit Digit position, eg: 1 (most left)
 	*/
         //% blockId="TM1637_showbit" block="%tm|show number %num |at %bit"
         //% jsdoc.loc.de="Zeigt eine einzelne Ziffer an einer bestimmten Stelle."

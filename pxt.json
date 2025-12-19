@@ -3,6 +3,7 @@
     "version": "1.0.3",
     "description": "makecode LED Digit Display (TM1637) package for micro:bit",
     "license": "MIT",
+    "icon": "icon.png",
     "dependencies": {
         "core": "*"
     },

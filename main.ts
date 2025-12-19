@@ -413,7 +413,7 @@ namespace TM1637 {
         
         /**
          * show a number in given position.
-         * @param num Number to be shown, e.g.: 111
+         * @param num Number to be shown
          * @param bit Digit position, eg: 0
 	*/
         //% blockId="TM1637_showbitParam" block="%tm|show number %num |at %bit"
@@ -433,7 +433,7 @@ namespace TM1637 {
         }
         /**
          * show a number in given position.
-         * @param num Number to be shown, e.g.: 222
+         * @param num Number to be shown
          * @param bit Digit position, eg: 0
 	*/
         //% blockId="TM1637_showbitnumlocen" block="%tm|show number %num |at %bit"
@@ -453,7 +453,7 @@ namespace TM1637 {
         }
         /**
          * show a number in given position.
-         * @param num Number to be shown, e.g.: 333
+         * @param num Number to be shown
          * @param bit Digit position, eg: 0
 	*/
         //% blockId="TM1637_showbitParts" block="%tm|show number %num |at %bit"
@@ -473,7 +473,7 @@ namespace TM1637 {
         }
         /**
          * show a number in given position.
-         * @param num Number to be shown, e.g.: 444
+         * @param num Number to be shown
          * @param bit Digit position, eg: 0
 	*/
         //% blockId="TM1637_showbitFuncpara" block="%tm|show number %num |at %bit"

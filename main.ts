@@ -325,9 +325,10 @@ namespace TM1637 {
         //% weight=50 blockGap=8
         //% parts="TM1637" num.min=-999 num.max=9999 num.dflt=1284
         showNumber(num: number) {
-			clear()
+			this.clear()			
+			let sign = 1
             if (num < 0) {
-				let numtmp = num
+				sign = -1
                 num = -num
             }
 			for (let i = 0; i < this.count; i++) {
@@ -335,7 +336,7 @@ namespace TM1637 {
 				else this.showbit(-1, this.count-1-i);
 			}
 			if (num == 0) this.showbit(0, this.count-1)
-            if (numtmp < 0) {
+            if (sign < 0) {
                 this._dat(3 - Math.min(3, Math.abs(num).toString().length), 0x40) // '-'
             }
 			/*

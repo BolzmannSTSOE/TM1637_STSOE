@@ -1,6 +1,6 @@
 {
     "name": "TM1637",
-    "version": "1.0.3",
+    "version": "1.0.4",
     "description": "makecode LED Digit Display (TM1637) package for micro:bit",
     "license": "MIT",
     "icon": "icon.png",

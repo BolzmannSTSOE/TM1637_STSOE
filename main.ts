@@ -276,6 +276,7 @@ namespace TM1637 {
         //% weight=60 blockGap=8
         //% parts="TM1637" num.min=0 num.max=15 num.dflt=5 bit.min=0 bit.max=3
         showbit(num: number = 5, bit: number = 0) {
+			// bei num=-1 wird das Digit ausgeschaltet
 		    if (num < 0) {
 		        this.buf[bit % this.count] = 0
 		        this._dat(bit % this.count, 0)
@@ -324,10 +325,20 @@ namespace TM1637 {
         //% weight=50 blockGap=8
         //% parts="TM1637" num.min=-999 num.max=9999 num.dflt=1284
         showNumber(num: number) {
+			clear()
             if (num < 0) {
-                this._dat(3 - Math.min(3, Math.abs(num).toString().length), 0x40) // '-'
+				let numtmp = num
                 num = -num
             }
+			for (let i = 0; i < this.count; i++) {
+				if (num >= 10**i) this.showbit(Math.idiv(num, 10**i) % 10, this.count-1-i); 
+				else this.showbit(-1, this.count-1-i);
+			}
+			if (num == 0) this.showbit(0, this.count-1)
+            if (numtmp < 0) {
+                this._dat(3 - Math.min(3, Math.abs(num).toString().length), 0x40) // '-'
+            }
+			/*
             else
                 if (num > 999) this.showbit(Math.idiv(num, 1000) % 10, 0); 
 				else this.showbit(-1, 0);
@@ -337,6 +348,7 @@ namespace TM1637 {
 			else this.showbit(-1, 2);
             if (num >= 0) this.showbit(num % 10, 3); 
 			else this.showbit(-1, 3);
+			*/
             /*
             else
                 if (num > 999) 

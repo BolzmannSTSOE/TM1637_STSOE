@@ -110,7 +110,7 @@ namespace TM1637 {
         //% block.loc.en="%tm|set intensity to %val"
         //% val.loc.de="Die Helligkeit des Displays TM1637."
         //% val.loc.en="the brightness of the TM1637, eg: 7"
-        //% weight=50 blockGap=8
+        //% weight=70 blockGap=8
         //% parts="TM1637" val.min=-1 val.max=7 val.dflt=7
         intensity(val: number = 7) {
             if (val < 0) {
@@ -181,7 +181,7 @@ namespace TM1637 {
         //% pos.loc.de="Stelle im Display des TM1637, z.B. 0 (ganz links)"
         //% pos.loc.en="Digit at display of TM1637, e.g. 0 (most left)"
         //% inlineInputMode=external
-        //% weight=89 blockGap=8 advanced=true
+        //% weight=90 blockGap=8 advanced=true
         //% parts="TM1637" pos.min=0 pos.max=3 pos.dflt=0
         segmentsAt(a: boolean, b: boolean, c: boolean, d: boolean, e: boolean, f: boolean, g: boolean, pos: number = 0) {
             let mask = 0
@@ -224,7 +224,7 @@ namespace TM1637 {
         //% segments.loc.en="Segment-bitmask (binary recommended), e.g. 0b01111111 for 8 or 0b01100110 for 4"
         //% pos.loc.de="Stelle im Display des TM1637, z.B. 0 (ganz links)"
         //% pos.loc.en="Digit position (0..count-1)"
-        //% weight=90 blockGap=8 advanced=true
+        //% weight=80 blockGap=8 advanced=true
         //% parts="TM1637" segments.dflt=0b01111111 pos.min=0 pos.max=3 pos.dflt=0
         lightSegmentsAt(segments: number = 0b01111111, pos: number = 0) {
             this.buf[pos % this.count] = segments & 0xFF
@@ -246,7 +246,7 @@ namespace TM1637 {
         //% num.loc.en="Number to be shown, e.g. 5"
         //% bit.loc.de="Stelle im Display des TM1637, z.B. 0 (ganz links)"
         //% bit.loc.en="Digit position, e.g. 0 (most left)"
-        //% weight=90 blockGap=8
+        //% weight=60 blockGap=8
         //% parts="TM1637" num.min=0 num.max=15 num.dflt=5 bit.min=0 bit.max=3
         showbit(num: number = 5, bit: number = 0) {
             this.buf[bit % this.count] = _SEGMENTS[num % 16]
@@ -264,7 +264,7 @@ namespace TM1637 {
         //% block.loc.en="%tm|show number %num with leading zeros"
         //% num.loc.de="Zahl, die angezeigt werden soll, z.B. 281"
         //% num.loc.en="Number to be shown, e.g. 281"
-        //% weight=91 blockGap=8
+        //% weight=40 blockGap=8
         //% parts="TM1637" num.min=-999 num.max=9999 num.dflt=281
         showNumberWithLeadingZeros(num: number) {
             if (num < 0) {
@@ -289,7 +289,7 @@ namespace TM1637 {
         //% block.loc.en="%tm|show number %num"
         //% num.loc.de="Eine Zahl mit max. 4 Stellen, z.B. 1284"
         //% num.loc.en="is a number with max 4 digits, eg: 1284"
-        //% weight=92 blockGap=8
+        //% weight=50 blockGap=8
         //% parts="TM1637" num.min=-999 num.max=9999 num.dflt=1284
         showNumber(num: number) {
             if (num < 0) {
@@ -323,7 +323,7 @@ namespace TM1637 {
         //% block.loc.en="%tm|show hex number %num"
         //% num.loc.de="Eine Hexadezimalzahl, z.B. 0xA7F"
         //% num.loc.en="a hex number, eg: 0xA7F"
-        //% weight=90 blockGap=8
+        //% weight=30 blockGap=8
         //% parts="TM1637"
         showHex(num: number) {
             if (num < 0) {
@@ -351,7 +351,7 @@ namespace TM1637 {
         //% bit.loc.en="is the position, eg: 1"
         //% show.loc.de="EIN = Wahr, AUS = Falsch"
         //% show.loc.en="is show/hide dp, eg: true"
-        //% weight=70 blockGap=8
+        //% weight=20 blockGap=8
         //% parts="TM1637"
         showDP(bit: number = 1, show: boolean = true) {
             bit = bit % this.count
@@ -367,7 +367,7 @@ namespace TM1637 {
         //% jsdoc.loc.en="Clears the display (all segments off)."
         //% block.loc.de="Lösche alle Stellen des Displays %tm"
         //% block.loc.en="clear all digits of %tm"
-        //% weight=80 blockGap=8
+        //% weight=10 blockGap=8
         //% parts="TM1637"
         clear() {
             for (let i = 0; i < this.count; i++) {
@@ -384,7 +384,7 @@ namespace TM1637 {
         //% jsdoc.loc.en="Turns the display on."
         //% block.loc.de="Schalte das Display %tm ein."
         //% block.loc.en="turn on %tm"
-        //% weight=86 blockGap=8
+        //% weight=90 blockGap=8
         //% parts="TM1637"
         on() {
             this._ON = 8;
@@ -400,7 +400,7 @@ namespace TM1637 {
         //% jsdoc.loc.en="Turns the display off."
         //% block.loc.de="Schalte das Display %tm aus."
         //% block.loc.en="turn off %tm"
-        //% weight=85 blockGap=8
+        //% weight=80 blockGap=8
         //% parts="TM1637"
         off() {
             this._ON = 0;

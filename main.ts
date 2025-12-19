@@ -229,9 +229,9 @@ namespace TM1637 {
          * bit6=g, bit5=f, bit4=e, bit3=d, bit2=c, bit1=b, bit0=a
          *
          * Example:
-         * "8" (all segments a..g): 0b01111111
-         * "4" (b,c,f,g):           0b01100110
-         * @param segmentsText Segment-bitmask (binary recommended), eg: "0b01110110"
+         * "8" (all segments a..g): 0b1111111
+         * "4" (b,c,f,g):           0b1100110
+         * @param segmentsText Segment-bitmask (binary recommended), eg: "0b1110110"
          * @param pos Digit position (0..count-1), eg: 0
 	*/
         //% blockId="TM1637_lightsegmentsat" block="$this(tm)|light segments (bits) %segmentsText|at %pos"
@@ -239,14 +239,14 @@ namespace TM1637 {
         //% jsdoc.loc.en="Lights segments using a bitmask (advanced)."
         //% block.loc.de="$this(tm)|Segmente (binär) %segmentsText|der Stelle %pos einschalten."
         //% block.loc.en="$this(tm)|light segments (bits) %segmentsText|at %pos"
-        //% segmentsText.loc.de="Segment-BitMaske (empfohlen binär), z.B. 0b01111111 für 8 oder 0b01100110 für 4"
-        //% segmentsText.loc.en="Segment-bitmask (binary recommended), e.g. 0b01111111 for 8 or 0b01100110 for 4"
+        //% segmentsText.loc.de="Segment-BitMaske (empfohlen binär), z.B. 0b1111111 für 8 oder 0b1100110 für 4"
+        //% segmentsText.loc.en="Segment-bitmask (binary recommended), e.g. 0b1111111 for 8 or 0b1100110 for 4"
         //% pos.loc.de="Stelle im Display des TM1637, z.B. 0 (ganz links)"
         //% pos.loc.en="Digit position (0..count-1)"
         //% weight=80 blockGap=8 advanced=true
-		//% parts="TM1637" segmentsText.dflt="0b01110110" pos.min=0 pos.max=3 pos.dflt=0
+		//% parts="TM1637" segmentsText.dflt="0b1110110" pos.min=0 pos.max=3 pos.dflt=0
         //% segmentsText.shadow="text"
-        lightSegmentsAt(segmentsText: string = "0b01110110", pos: number = 0) {
+        lightSegmentsAt(segmentsText: string = "0b1110110", pos: number = 0) {
             let segments = parseBinText(segmentsText)
 			if (segments == -1) {
 				this._errorHandling()
@@ -325,7 +325,7 @@ namespace TM1637 {
         //% parts="TM1637" num.min=-999 num.max=9999 num.dflt=1284
         showNumber(num: number) {
             if (num < 0) {
-                this._dat(0, 0x40) // '-'
+                this._dat(3 - Math.min(3, Math.abs(num).toString().length), 0x40) // '-'
                 num = -num
             }
             else

@@ -234,8 +234,8 @@ namespace TM1637 {
         
         /**
          * show a number in given position.
-         * @param num Number to be shown, e.g. 5
-         * @param bit Digit position, e.g. 0 (most left)
+         * @param num Number to be shown, eg. 5
+         * @param bit Digit position, eg. 1 (most left)
 	*/
         //% blockId="TM1637_showbit" block="%tm|show number %num |at %bit"
         //% jsdoc.loc.de="Zeigt eine einzelne Ziffer an einer bestimmten Stelle."
@@ -247,11 +247,7 @@ namespace TM1637 {
         //% bit.loc.de="Stelle im Display des TM1637, z.B. 0 (ganz links)"
         //% bit.loc.en="Digit position, e.g. 0 (most left)"
         //% weight=90 blockGap=8
-		//% parts="TM1637"
-		//% num.min=0 num.max=15
-		//% bit.min=0 bit.max=3
-		//% num.shadow="math_number" num.defl=5
-		//% bit.shadow="math_number" bit.defl=0
+        //% parts="TM1637" num.min=0 num.max=15 num.dflt=5 bit.min=0 bit.max=3
         showbit(num: number = 5, bit: number = 0) {
             this.buf[bit % this.count] = _SEGMENTS[num % 16]
             this._dat(bit, _SEGMENTS[num % 16])

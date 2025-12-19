@@ -7,7 +7,7 @@
 /**
  * Four Digit Display
  */
-//% weight=100 color=#60C9260 icon="7"
+//% weight=100 color=#60C926 icon="7"
 namespace TM1637 {
     let TM1637_CMD1 = 0x40;
     let TM1637_CMD2 = 0xC0;
@@ -247,7 +247,11 @@ namespace TM1637 {
         //% bit.loc.de="Stelle im Display des TM1637, z.B. 0 (ganz links)"
         //% bit.loc.en="Digit position, e.g. 0 (most left)"
         //% weight=90 blockGap=8
-        //% parts="TM1637" num.min=0 num.max=15 num.defl=5 bit.min=0 bit.max=3
+		//% parts="TM1637"
+		//% num.min=0 num.max=15
+		//% bit.min=0 bit.max=3
+		//% num.shadow="math_number" num.defl=5
+		//% bit.shadow="math_number" bit.defl=0
         showbit(num: number = 5, bit: number = 0) {
             this.buf[bit % this.count] = _SEGMENTS[num % 16]
             this._dat(bit, _SEGMENTS[num % 16])

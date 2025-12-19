@@ -265,7 +265,7 @@ namespace TM1637 {
         //% num.loc.de="Zahl, die angezeigt werden soll, z.B. 281"
         //% num.loc.en="Number to be shown, e.g. 281"
         //% weight=91 blockGap=8
-        //% parts="TM1637" num.min=-999 num.max=9999 num.dflt=0
+        //% parts="TM1637" num.min=-999 num.max=9999 num.dflt=281
         showNumberWithLeadingZeros(num: number) {
             if (num < 0) {
                 this._dat(0, 0x40) // '-'
@@ -290,7 +290,7 @@ namespace TM1637 {
         //% num.loc.de="Eine Zahl mit max. 4 Stellen, z.B. 1284"
         //% num.loc.en="is a number with max 4 digits, eg: 1284"
         //% weight=92 blockGap=8
-        //% parts="TM1637" num.min=-999 num.max=9999 num.dflt=0
+        //% parts="TM1637" num.min=-999 num.max=9999 num.dflt=1284
         showNumber(num: number) {
             if (num < 0) {
                 this._dat(0, 0x40) // '-'
@@ -322,7 +322,7 @@ namespace TM1637 {
         //% block.loc.de="%tm|Zeige die Hexadezimalzahl %num"
         //% block.loc.en="%tm|show hex number %num"
         //% num.loc.de="Eine Hexadezimalzahl, z.B. 0xA7F"
-        //% num.loc.en="a hex number, e.g. 0xA7F"
+        //% num.loc.en="a hex number, eg: 0xA7F"
         //% weight=90 blockGap=8
         //% parts="TM1637"
         showHex(num: number) {
